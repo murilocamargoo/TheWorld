@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
+using Microsoft.Extensions.Configuration;
 using TheWorld.Services;
 using TheWorld.ViewModels;
 
@@ -8,10 +8,12 @@ namespace TheWorld.Controllers.Web
     public class AppController : Controller
     {
         private IEmailService _emailService;
+        private IConfigurationRoot _config;
 
-        public AppController(IEmailService emailService)
+        public AppController(IEmailService emailService, IConfigurationRoot configuration)
         {
             _emailService = emailService;
+            _config = configuration;
         }
 
         public IActionResult Index()
@@ -27,7 +29,14 @@ namespace TheWorld.Controllers.Web
         [HttpPost]
         public IActionResult Contact(ContactViewModel contactViewModel)
         {
-            _emailService.SendEmail("murilo.ccamargo@gmail.com", contactViewModel.Email, "From TheWorld", contactViewModel.Message);
+            if (ModelState.IsValid)
+            {
+                _emailService.SendEmail(_config["MailSettings:ToAddress"], contactViewModel.Email, "From TheWorld",
+                    contactViewModel.Message);
+
+                ModelState.Clear();
+                ViewBag.Message = "Email sent. Thanks!";
+            }
             return View();
         }
 

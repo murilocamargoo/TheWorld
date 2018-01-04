@@ -12,6 +12,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
+        "MailSettings__ToAddress": "murilo.ccamargo@gmail.com",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
