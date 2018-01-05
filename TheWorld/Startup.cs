@@ -16,6 +16,11 @@ namespace TheWorld
         private IHostingEnvironment _environment;
         private IConfigurationRoot _config;
 
+        /// <summary>
+        /// teste
+        /// </summary>
+        /// <param name="environment"></param>
+
         public Startup(IHostingEnvironment environment)
         {
             _environment = environment;
