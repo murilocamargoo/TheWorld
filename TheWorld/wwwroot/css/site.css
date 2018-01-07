@@ -70,7 +70,7 @@ input[type=text], input[type=password], textarea {
     transition: margin-left ease .25s;
 }
 
-#main {
+/*#main {
     background-color: #eee;
     padding: 4px;
     margin-left: 0px;
@@ -83,4 +83,4 @@ input[type=text], input[type=password], textarea {
     position: fixed;
     bottom: 0;
     width: 100%;
-}
+}*/
