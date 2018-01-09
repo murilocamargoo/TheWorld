@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using TheWorld.Context;
 using TheWorld.Services;
 using TheWorld.ViewModels;
 
@@ -9,16 +11,20 @@ namespace TheWorld.Controllers.Web
     {
         private IEmailService _emailService;
         private IConfigurationRoot _config;
+        private WorldContext _context;
 
-        public AppController(IEmailService emailService, IConfigurationRoot configuration)
+        public AppController(IEmailService emailService, IConfigurationRoot configuration, WorldContext context)
         {
             _emailService = emailService;
             _config = configuration;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var data = _context.Trips.ToList();
+
+            return View(data);
         }
 
         public IActionResult Contact()
