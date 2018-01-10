@@ -20,7 +20,7 @@ namespace TheWorld.Context
         {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseSqlServer(_config["ConnectionStrings:WorldContextCOnnection"]);
+            optionsBuilder.UseSqlServer(_config["ConnectionStrings:WorldContextConnection"]);
         }
     }
 }

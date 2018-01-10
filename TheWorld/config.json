@@ -3,6 +3,6 @@
     "ToAddress": "murilo.ccamargo@gmail.com"
   },
   "ConnectionStrings": {
-    "WorldContextCOnnection": "Server=(localdb)\\MSSQLLocalDb;Database=TheWorldDb;Trusted_Connection=true;MultipleActiveResultSets=true;" 
+    "WorldContextConnection": "Server=(localdb)\\MSSQLLocalDb;Database=TheWorldDb;Trusted_Connection=true;MultipleActiveResultSets=true;" 
   } 
 }
