@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TheWorld.Context;
+using TheWorld.Models;
 using TheWorld.Services;
 
 namespace TheWorld
@@ -49,20 +51,29 @@ namespace TheWorld
 
             services.AddDbContext<WorldContext>();
 
+            services.AddScoped<IWorldRepository, WorldRepository>();
+
             services.AddTransient<WorldContextSeedData>();
+
+            services.AddLogging();
 
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, WorldContextSeedData seederData)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, WorldContextSeedData seederData, ILoggerFactory factory)
         {
-
-
             //#if DEBUG
             if (env.IsEnvironment("Development"))
+            {
                 app.UseDeveloperExceptionPage();
+                factory.AddDebug(LogLevel.Information);
+            }
             //#endif
+            else
+            {
+                factory.AddDebug(LogLevel.Error);
+            }
 
             app.UseStaticFiles();
 

@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using TheWorld.Context;
+using TheWorld.Models;
 using TheWorld.Services;
 using TheWorld.ViewModels;
 
@@ -11,20 +14,30 @@ namespace TheWorld.Controllers.Web
     {
         private IEmailService _emailService;
         private IConfigurationRoot _config;
-        private WorldContext _context;
+        private IWorldRepository _repository;
+        private ILogger<AppController> _logger;
 
-        public AppController(IEmailService emailService, IConfigurationRoot configuration, WorldContext context)
+        public AppController(IEmailService emailService, IConfigurationRoot configuration, IWorldRepository repository, ILogger<AppController> logger)
         {
             _emailService = emailService;
             _config = configuration;
-            _context = context;
+            _repository = repository;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
-            var data = _context.Trips.ToList();
+            try
+            {
+                var data = _repository.GetAllTrips();
 
-            return View(data);
+                return View(data);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Falha ao recuperar as viagens na página inicial:{e.Message}");
+                return Redirect("/error");
+            }
         }
 
         public IActionResult Contact()
