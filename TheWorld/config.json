@@ -3,6 +3,7 @@
     "ToAddress": "murilo.ccamargo@gmail.com"
   },
   "ConnectionStrings": {
-    "WorldContextConnection": "Server=(localdb)\\MSSQLLocalDb;Database=TheWorldDb;Trusted_Connection=true;MultipleActiveResultSets=true;" 
+    "WorldContextConnection": "Server=(localdb)\\MSSQLLocalDb;Database=TheWorldDb;Integrated Security=false;MultipleActiveResultSets=true;"
+    //"WorldContextConnection": "Server=tcp:muriloestudosdb.database.windows.net,1433;Initial Catalog=TheWorldDb;Persist Security Info=False;User ID=Murilo;Password=Mm020390;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
   } 
 }
