@@ -91,9 +91,9 @@ namespace TheWorld
                 );
             });
 
-            //Essa porra de seeder da pau quando for usar migrations, quando for atualizar o banco
+            //TODO:Essa porra de seeder da pau quando for usar migrations, quando for atualizar o banco
             //Ou seja, quando precisar atualizar comentar essa merda
-            seederData.EnsureSeedData().Wait();
+            //seederData.EnsureSeedData().Wait();
         }
     }
 }
