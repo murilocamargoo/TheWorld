@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +13,7 @@ using Newtonsoft.Json.Serialization;
 using TheWorld.Context;
 using TheWorld.Models;
 using TheWorld.Services;
+using TheWorld.ViewModels;
 
 namespace TheWorld
 {
@@ -54,6 +56,8 @@ namespace TheWorld
 
             services.AddScoped<IWorldRepository, WorldRepository>();
 
+            services.AddTransient<GeoCoordsService>();
+
             services.AddTransient<WorldContextSeedData>();
 
             services.AddLogging();
@@ -68,6 +72,12 @@ namespace TheWorld
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, WorldContextSeedData seederData, ILoggerFactory factory)
         {
+            Mapper.Initialize(config =>
+            {
+                config.CreateMap<TripViewModel, Trip>().ReverseMap();
+                config.CreateMap<StopViewModel, Stop>().ReverseMap();
+            });
+
             //#if DEBUG
             if (env.IsEnvironment("Development"))
             {
