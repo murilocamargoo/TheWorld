@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -38,6 +39,14 @@ namespace TheWorld.Controllers.Web
                 _logger.LogError($"Falha ao recuperar as viagens na página inicial:{e.Message}");
                 return Redirect("/error");
             }
+        }
+
+        [Authorize]
+        public IActionResult Trips()
+        {
+            var data = _repository.GetAllTrips();
+
+            return View(data);
         }
 
         public IActionResult Contact()
