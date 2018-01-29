@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using TheWorld.Models;
 
 namespace TheWorld.Context
@@ -9,21 +10,34 @@ namespace TheWorld.Context
     public class WorldContextSeedData
     {
         private WorldContext _context;
+        private UserManager<WorldUser> _userManager;
 
-        public WorldContextSeedData(WorldContext context)
+        public WorldContextSeedData(WorldContext context, UserManager<WorldUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task EnsureSeedData()
         {
             if (!_context.Trips.Any())
             {
+                if (await _userManager.FindByEmailAsync("murilo.ccamargo@gmail.com") == null)
+                {
+                    var user = new WorldUser()
+                    {
+                        UserName = "murilocamargo",
+                        Email = "murilo.ccamargo@gmail.com"
+                    };
+
+                    await _userManager.CreateAsync(user, "P@ssw0rd!");
+                }
+
                 var usTrip = new Trip()
                 {
                     DateCreated = DateTime.Now,
                     Name = "US Trip",
-                    UserName = "", //TODO add userName
+                    UserName = "murilocamargo", //TODO add userName
                     Stops = new List<Stop>()
                     {
                         new Stop() {  Name = "Atlanta, GA", Arrival = new DateTime(2014, 6, 4), Latitude = 33.748995, Longitude = -84.387982, Order = 0 },
@@ -42,7 +56,7 @@ namespace TheWorld.Context
                 {
                     DateCreated = DateTime.Now,
                     Name = "World Trip",
-                    UserName = "", //TODO add userName
+                    UserName = "murilocamargo", //TODO add userName
                     Stops = new List<Stop>()
                     {
                         new Stop() { Order = 0, Latitude =  33.748995, Longitude =  -84.387982, Name = "Atlanta, Georgia", Arrival = DateTime.Parse("Jun 3, 2014") },
