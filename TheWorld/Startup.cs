@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -60,6 +61,12 @@ namespace TheWorld
 
             services.AddTransient<WorldContextSeedData>();
 
+            services.AddIdentity<WorldUser, IdentityRole>(config =>
+            {
+                config.User.RequireUniqueEmail = true;
+                config.Password.RequiredLength = 6;
+            }).AddEntityFrameworkStores<WorldContext>();
+
             services.AddLogging();
 
             services.AddMvc()
@@ -92,6 +99,8 @@ namespace TheWorld
 
             app.UseStaticFiles();
 
+            app.UseAuthentication();
+
             app.UseMvc(config =>
             {
                 config.MapRoute(
@@ -103,7 +112,7 @@ namespace TheWorld
 
             //TODO:Essa porra de seeder da pau quando for usar migrations, quando for atualizar o banco
             //Ou seja, quando precisar atualizar comentar essa merda
-            //seederData.EnsureSeedData().Wait();
+            seederData.EnsureSeedData().Wait();
         }
     }
 }
