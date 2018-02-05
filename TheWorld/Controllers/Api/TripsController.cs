@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using TheWorld.Models;
 using TheWorld.ViewModels;
 using Microsoft.Extensions.Logging;
+using TheWorld.Services;
 
 namespace TheWorld.Controllers.Api
 {
@@ -16,11 +17,15 @@ namespace TheWorld.Controllers.Api
     {
         private IWorldRepository _worldRepository;
         private ILogger<TripsController> _logger;
+        private GeoCoordsService _coordsService;
 
-        public TripsController(IWorldRepository worldRepository, ILogger<TripsController> logger)
+        public TripsController(IWorldRepository worldRepository,
+                               ILogger<TripsController> logger,
+                               GeoCoordsService coordsService)
         {
             _worldRepository = worldRepository;
             _logger = logger;
+            _coordsService = coordsService;
         }
 
         [HttpGet("")]
@@ -28,7 +33,7 @@ namespace TheWorld.Controllers.Api
         {
             try
             {
-                var results = _worldRepository.GetAllTrips();
+                var results = _worldRepository.GetTripsByUserName(this.User.Identity.Name);
 
                 return Ok(Mapper.Map<IEnumerable<TripViewModel>>(results));
             }
@@ -46,6 +51,9 @@ namespace TheWorld.Controllers.Api
             if (ModelState.IsValid)
             {
                 var newTrip = Mapper.Map<Trip>(theTrip);
+
+                newTrip.UserName = User.Identity.Name;
+
                 _worldRepository.AddTrip(newTrip);
 
                 if (await _worldRepository.SaveChangesAsync())
